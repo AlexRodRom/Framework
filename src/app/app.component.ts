@@ -1,3 +1,5 @@
+import { ExecutiveGroup } from './classes/ExecutiveGroup/executive-group';
+import { Executive } from './classes/Executive/executive';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,4 +9,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'FrameWorkAngular';
+  execNode: Executive;
+  execGroupNode: ExecutiveGroup;
+
+  onExecNodeSelected(execNode: Executive) {
+    this.execNode = execNode;
+  }
+  onExecGroupNodeSelected(execGroupNode: ExecutiveGroup) {
+    this.execGroupNode = execGroupNode;
+  }
+
 }

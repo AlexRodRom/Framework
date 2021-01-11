@@ -1,0 +1,31 @@
+.mat-tree{
+  .mat-tree-node{
+    button{
+      border: none;
+      background-color: transparent;
+      color:white;
+    }
+
+    &:first-of-type{
+    background-color:#4cc283;
+    border-radius: 10px;
+    margin: 5px;
+    }
+
+    &[aria-level="2"]{
+      width: 75%;
+      margin-left: 25%;
+      padding-left: 0px !important;
+      background-color: #39A3E9;
+    }
+
+    background-color: #FF9B38 ;
+    border-radius: 10px;
+    margin: 5px;
+  }
+}
+.button-right{
+  margin-left:85%;
+}
+
+

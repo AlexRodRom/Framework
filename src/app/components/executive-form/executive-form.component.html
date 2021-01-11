@@ -1,0 +1,111 @@
+<div>
+  <div *ngIf="execServ.updated">
+    <div class="alert alert-success xs">
+      <a class="close" (click)="onRemoveAlert()">&times;</a>
+      <span>Record Updated! </span>
+    </div>
+  </div>
+  <div *ngIf="execServ.httpError" >
+    <div class="alert alert-warning">
+    <a class="close" (click)="onRemoveErrorAlert()">&times;</a>
+    HTTP Error - {{execServ.httpError.message}}
+    </div>
+  </div>
+  <form #executiveForm="ngForm" [ngClass]="{'form': true}" (ngSubmit)="executiveForm.form.valid && onSubmitExecutive(executiveForm)">
+    <fieldset>
+      <legend>Executive Title</legend>
+        <div class="ml-5">
+          <div class="form-group">
+            <label>Prefix</label>
+            <input type="text" name="title" class="form-control" [(ngModel)]="execNode.title" #title="ngModel"
+              [ngClass]="{ 'is-invalid': executiveForm.submitted && title.invalid }">
+            <div class="invalid-feedback" *ngIf="executiveForm.submitted && title.invalid">
+              <p *ngIf="title.errors.required">title is required</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>First name</label>
+            <input type="text" name="firstName" class="form-control" [(ngModel)]="execNode.firstName" #firstName="ngModel"
+              [ngClass]="{ 'is-invalid': executiveForm.submitted && firstName.invalid }" required>
+            <div class="invalid-feedback" *ngIf="executiveForm.submitted && firstName.invalid">
+              <p *ngIf="firstName.errors.required">firstName is required</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Initials</label>
+            <input type="text" name="initials" class="form-control" [(ngModel)]="execNode.initials" #initials="ngModel"
+              [ngClass]="{ 'is-invalid': executiveForm.submitted && initials.invalid }">
+            <div class="invalid-feedback" *ngIf="executiveForm.submitted && initials.invalid">
+              <p *ngIf="initials.errors.required">initials is required</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Last name</label>
+            <input type="text" name="lastName" class="form-control" [(ngModel)]="execNode.lastName" #lastName="ngModel"
+              [ngClass]="{ 'is-invalid': executiveForm.submitted && lastName.invalid }" required>
+            <div class="invalid-feedback" *ngIf="executiveForm.submitted && lastName.invalid">
+              <p *ngIf="lastName.errors.required">Lastname is required</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Suffix</label>
+            <input type="text" name="postTitle" class="form-control" [(ngModel)]="execNode.postTitle" #postTitle="ngModel"
+              [ngClass]="{ 'is-invalid': executiveForm.submitted && postTitle.invalid }">
+            <div class="invalid-feedback" *ngIf="executiveForm.submitted && postTitle.invalid">
+              <p *ngIf="postTitle.errors.required">Post Title is required</p>
+            </div>
+          </div>
+        </div>
+    </fieldset>
+    <fieldset>
+      <legend>Executive Details</legend>
+      <div class="ml-5">
+        <div class="form-group">
+          <label>System Initials</label>
+          <input type="text" name="systemInitials" class="form-control" [(ngModel)]="execNode.systemInitials" #systemInitials="ngModel"
+            [ngClass]="{ 'is-invalid': executiveForm.submitted && systemInitials.invalid }">
+          <div class="invalid-feedback" *ngIf="executiveForm.submitted && systemInitials.invalid">
+            <p *ngIf="systemInitials.errors.required">System Initials is required</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Salutation</label>
+          <input type="text" name="salutation" class="form-control" [(ngModel)]="execNode.salutation" #salutation="ngModel"
+            [ngClass]="{ 'is-invalid': executiveForm.submitted && salutation.invalid }">
+          <div class="invalid-feedback" *ngIf="executiveForm.submitted && salutation.invalid">
+            <p *ngIf="salutation.errors.required">Salutation is required</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Job Title</label>
+          <input type="text" name="jobTitle" class="form-control" [(ngModel)]="execNode.jobTitle" #jobTitle="ngModel"
+            [ngClass]="{ 'is-invalid': executiveForm.submitted && jobTitle.invalid }">
+          <div class="invalid-feedback" *ngIf="executiveForm.submitted && jobTitle.invalid">
+            <p *ngIf="jobTitle.errors.required">jobTitle is required</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Office</label>
+          <input type="text" name="officeId" class="form-control" [(ngModel)]="execNode.officeId" #officeId="ngModel"
+            [ngClass]="{ 'is-invalid': executiveForm.submitted && officeId.invalid }" disabled>
+          <div class="invalid-feedback" *ngIf="executiveForm.submitted && officeId.invalid">
+            <p *ngIf="officeId.errors.required">officeId is required</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Executive Group</label>
+          <mat-form-field appearance="outline">
+            <mat-select [(ngModel)]="execNode.executiveGroup.id" name="group">
+              <mat-option *ngFor="let group of this.execServ.executiveGroupsData" [value]="group.id">
+                {{group.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </fieldset>
+    <div class="form-group xs">
+      <button [ngClass]="{'tradeButton':true, 'btn':true, 'btn-success':true, 'btn-block':true}" >Update Executive</button>
+    </div>
+  </form>
+</div>
