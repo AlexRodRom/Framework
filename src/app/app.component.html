@@ -11,11 +11,11 @@
 
 <div class="content" role="main" [ngClass]="{'row': true}">
   <div [ngClass]="{'col-12':true, 'col-lg-2':true, 'leftSideMenu':true}" >
-    <app-treeview (execNode)="onExecNodeSelected($event)" (execGroupNode)="onExecGroupNodeSelected($event)" [refreshTree]='execGroupNode'></app-treeview>
+    <app-treeview (execNode)="onExecNodeSelected($event)" (execGroupNode)="onExecGroupNodeSelected($event)" ></app-treeview>
   </div>
   <div [ngClass]="{'col-12':true, 'col-lg-8':true, 'margin30':true}">
     <app-executive-form [execNode]='execNode' *ngIf="execNode"></app-executive-form>
-    <app-executive-group-form [execGroupNode]='execGroupNode' (refreshTree)="onRefreshTree($event)" *ngIf="execGroupNode"></app-executive-group-form>
+    <app-executive-group-form [execGroupNode]='execGroupNode' *ngIf="execGroupNode"></app-executive-group-form>
   </div>
 </div>
 
