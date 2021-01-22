@@ -84,31 +84,31 @@ export class TreeviewComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
+    // const filterValue = (event.target as HTMLInputElement).value;
 
-    var newGroup: ExectiveGroupNode[] = [{"id": -2,"name": "New Group","children": []}];
-    this.dataSource = newGroup;
-    // this.dataSource.data.forEach(element => {
+    // var newGroup: ExectiveGroupNode[] = [{"id": -2,"name": "New Group","children": []}];
+    // this.dataSource = newGroup;
+    // // this.dataSource.data.forEach(element => {
 
-      // console.log(element.children);
-      // console.log(element.children.filter = filterValue.trim().toLowerCase());
+    //   // console.log(element.children);
+    //   // console.log(element.children.filter = filterValue.trim().toLowerCase());
 
-      // element.children.forEach(child => {
-      //   if(child.firstName != filterValue.trim().toLowerCase())
-      //   {
-      //     console.log("remove:"+ child);
-      //     //this.dataSource
-      //   }
-      // });
+    //   // element.children.forEach(child => {
+    //   //   if(child.firstName != filterValue.trim().toLowerCase())
+    //   //   {
+    //   //     console.log("remove:"+ child);
+    //   //     //this.dataSource
+    //   //   }
+    //   // });
 
-      // element.filter = filterValue.trim().toLowerCase();
-      // element.Children.forEach(child => {
+    //   // element.filter = filterValue.trim().toLowerCase();
+    //   // element.Children.forEach(child => {
 
-      // });
+    //   // });
 
-    // });
+    // // });
 
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    // this.dataSource.filter = filterValue.trim().toLowerCase();
 
   }
 
