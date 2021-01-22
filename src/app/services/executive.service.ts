@@ -1,9 +1,10 @@
 import { ExecutiveGroup,ExectiveGroupNode } from './../classes/ExecutiveGroup/executive-group';
 import { Executive, ExecutiveNode } from '../classes/Executive/executive';
-import { map, filter} from 'rxjs/operators';
+import { map, filter, mergeMap} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 
 
 @Injectable({
@@ -35,12 +36,21 @@ export class ExecutiveService {
     return this.http.get<Executive[]>(this.rootApi+'executives');
   }
 
+  // GET
+  public getAllExecutivesPipe(): Observable<Executive[]> {
+    return this.http.get<Executive[]>(this.rootApi+'executives').pipe(map(x=>x["value"]));
+  }
+
   public getExecutive(id: number): Observable<Executive> {
     return this.http.get<Executive>(this.rootApi+'executives/'+id);
   }
 
   public getAllExecutiveGroups(): Observable<ExecutiveGroup[]> {
     return this.http.get<ExecutiveGroup[]>(this.rootApi+'executiveGroups');
+  }
+
+  public getAllExecutiveGroupsPipe(): Observable<ExectiveGroupNode[]> {
+    return this.http.get<ExecutiveGroup[]>(this.rootApi+'executiveGroups').pipe(map(x=>x["value"]));
   }
 
   public getExecutiveGroup(id: number): Observable<ExecutiveGroup> {
@@ -71,6 +81,47 @@ export class ExecutiveService {
       },
       data => { this.httpError = data; }
     );
+  }
+
+  public getFormatted():any {
+
+    return this.getAllExecutivesPipe()
+      .pipe(
+
+        mergeMap(x => this.getAllExecutiveGroupsPipe()
+          .pipe(
+            map( value => value
+              .map(group=> ({...group, children: x
+                .map(x=>({...x,name:`${x["firstName"]} ${x["lastName"]}`}))
+                .filter(executive=> executive["executiveGroup"].id === group.id) })))
+
+            //map( value => value.map(group=> ({id: group.id, name: group.name, version: group.version, children: (x).filter(executive=> executive["executiveGroup"].id === group.id) })))
+
+            // // map(x=>({...x,name:`${x["firstName"]} ${x["lastName"]}`})),
+            // // map( value => value.map(group=> ({...group, children: x.filter(executive=> executive["executiveGroup"].id === group.id) })))
+        )
+      )
+      )
+
+
+    //).subscribe(x=> console.log(x));
+
+    // this.getAllExecutivesPipe()
+    // .pipe(
+    //   map( value => value.filter(group=> group["executiveGroup"].id === 2))
+    // ).subscribe(x=> console.log(x));
+
+    // this.getAllExecutiveGroupsPipe()
+    // .pipe(
+    //   map( value => value.map(group=> ({id: group.id, name: group.name, children: [null] })))
+    // ).subscribe(x=> console.log(x));
+
+    // this.getAllExecutivesPipe()
+    // .pipe(
+    //   map( value => value.filter(group=> group["executiveGroup"].id === 2))
+    // ).subscribe(x=> console.log(x));
+
+
   }
 
 

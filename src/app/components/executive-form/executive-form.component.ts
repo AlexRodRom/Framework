@@ -49,8 +49,10 @@ export class ExecutiveFormComponent implements OnInit {
 
     // calling Service for update API method
     this.execServ.updateExecutive(this.execNode.id,ExecutiveUpdated);
+
+    this.execNode.version++;
     // Calling to Treeview compenent for refreshing the tree view.
-    this.tree.buildTree();
+    this.tree.refreshTree();
   }
 
   //function to close the alert for a succeed updation.

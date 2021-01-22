@@ -12,7 +12,7 @@
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
-  border-radius: 10px;
+  border-radius: 0px;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
@@ -23,7 +23,7 @@
     width: 200px;
     float: right;
     button{
-      border-radius: 10px;
+      border-radius: 0px;
     }
   }
 }
@@ -31,7 +31,7 @@
 fieldset {
   background-color: #eeeeee;
   margin-bottom:20px;
-  border-radius: 10px;
+  // border-radius: 10px;
 }
 
 legend {
@@ -39,8 +39,8 @@ legend {
   background-color: #39A3E9;
   color: white;
   padding: 5px 10px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  //border-top-left-radius: 10px;
+  //border-top-right-radius: 10px;
 }
 
 .alert.alert-success.xs{

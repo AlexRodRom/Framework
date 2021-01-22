@@ -54,7 +54,17 @@ export class TreeviewComponent implements OnInit {
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
     // Susbcring to Service method to bring the Observable with the API data.
-    this.execServ.getFormattedData().subscribe(data=> this.dataSource.data = data);
+    // this.execServ.getFormattedData().subscribe((data)=> { this.dataSource.data = data; console.log(data); console.log(this.dataSource.data )});
+    // this.execServ.getFormattedData().subscribe(()=>this.dataSource.data = this.execServ.executiveGroups);
+
+    // this.execServ.getFormattedData().subscribe();
+
+    this.execServ.getFormatted().subscribe((data)=>{console.log(data);this.dataSource.data = data});
+
+  }
+
+  public refreshTree() {
+    this.dataSource = this.execServ.executiveGroups;
   }
 
   hasChild = (_: number, node: ExecutiveFlatNode) => node.expandable;
@@ -65,16 +75,47 @@ export class TreeviewComponent implements OnInit {
 
     // populate the OUTPUT with the selected Executive node to be sent to the form.
     if(node.level===1){
-      var executive: Executive = this.execServ.executivesData.find(x => x.id === node.id);
+      //var executive: Executive = this.execServ.executivesData.find(x => x.id === node.id);
+      var executive: Executive = this.dataSource.find(x => x.id === node.id);
       this.execGroupNode.emit(null);
       this.execNode.emit(executive);
     }
     // populate the OUTPUT with the selected Executive Group node to be sent to the form.
     else{
-      var executiveGroup: ExecutiveGroup = this.execServ.executiveGroupsData.find(x => x.id === node.id);
+      //var executiveGroup: ExecutiveGroup = this.execServ.executiveGroupsData.find(x => x.id === node.id);
+      var executiveGroup: ExecutiveGroup = this.dataSource.data.find(x => x.id === node.id);
       this.execNode.emit(null);
       this.execGroupNode.emit(executiveGroup);
     }
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+
+    var newGroup: ExectiveGroupNode[] = [{"id": -2,"name": "New Group","children": []}];
+    this.dataSource = newGroup;
+    // this.dataSource.data.forEach(element => {
+
+      // console.log(element.children);
+      // console.log(element.children.filter = filterValue.trim().toLowerCase());
+
+      // element.children.forEach(child => {
+      //   if(child.firstName != filterValue.trim().toLowerCase())
+      //   {
+      //     console.log("remove:"+ child);
+      //     //this.dataSource
+      //   }
+      // });
+
+      // element.filter = filterValue.trim().toLowerCase();
+      // element.Children.forEach(child => {
+
+      // });
+
+    // });
+
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
   }
 
 }
