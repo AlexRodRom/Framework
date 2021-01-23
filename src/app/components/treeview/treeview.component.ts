@@ -77,7 +77,7 @@ export class TreeviewComponent implements OnInit {
     // populate the OUTPUT with the selected Executive Group node to be sent to the form.
     else{
       //var executiveGroup: ExecutiveGroup = this.execServ.executiveGroupsData.find(x => x.id === node.id);
-      var executiveGroup: ExecutiveGroup = this.dataSource.data.find(x => x.id === node.id);
+      var executiveGroup: ExecutiveGroup = this.execServ.executiveGroupsData.find(x => x.id === node.id);
       this.execNode.emit(null);
       this.execGroupNode.emit(executiveGroup);
     }
