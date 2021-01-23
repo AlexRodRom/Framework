@@ -16,6 +16,7 @@ export class ExecutiveService {
 
   // data for Whole json from API
   executivesData: Executive[];
+  // executiveGroupsData: ExecutiveGroup[];
   executiveGroupsData: ExecutiveGroup[];
 
   // data for formatted objects for tree view
@@ -55,7 +56,7 @@ export class ExecutiveService {
   }
 
   public getAllExecutiveGroupsPipe(): Observable<ExectiveGroupNode[]> {
-    return this.http.get<ExecutiveGroup[]>(this.rootApi+'executiveGroups').pipe(map(x=>x["value"]));
+    return this.http.get<ExecutiveGroup[]>(this.rootApi+'executiveGroups').pipe(map(x=> x["value"]));
   }
 
 
@@ -88,15 +89,17 @@ export class ExecutiveService {
 
     return this.getAllExecutivesPipe()
     .pipe(
-
+      map(exec=>this.executivesData = exec), // Adding All Executives to global variable for using when selecting a exec from treeview.
       mergeMap(x => this.getAllExecutiveGroupsPipe()
         .pipe(
-          map( value => value
+          map( value => {
+            this.executiveGroupsData = value; // Adding All Groups to global variable for using when selecting a Group from treeview and for the Dropdownlist in exec form.
+            return value // returning the groupNodes formatted.
             .map(group=> ({...group, children: x
-              .map(x=>({...x,name:`${x["firstName"]} ${x["lastName"]}`}))
-              .filter(executive=> executive["executiveGroup"].id === group.id) })
+              .map(x=>({...x,name:`${x["firstName"]} ${x["lastName"]}`})) // adding "name" prop to show in the treeview.
+              .filter(executive=> executive["executiveGroup"].id === group.id) }) // grouping the executives inside its group.
             )
-          )
+          })
         )
       )
     )

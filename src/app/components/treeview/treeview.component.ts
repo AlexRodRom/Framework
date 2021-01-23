@@ -53,7 +53,7 @@ export class TreeviewComponent implements OnInit {
 
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-    this.execServ.getFormatted().subscribe((data)=>{console.log(data);this.dataSource.data = data});
+    this.execServ.getFormatted().subscribe((data)=>{console.log(data);console.log(this.execServ.executivesData);this.dataSource.data = data});
 
   }
 
@@ -70,7 +70,7 @@ export class TreeviewComponent implements OnInit {
     // populate the OUTPUT with the selected Executive node to be sent to the form.
     if(node.level===1){
       //var executive: Executive = this.execServ.executivesData.find(x => x.id === node.id);
-      var executive: Executive = this.dataSource.data.find(x => x.id === node.id);
+      var executive: Executive = this.execServ.executivesData.find(x => x.id === node.id);
       this.execGroupNode.emit(null);
       this.execNode.emit(executive);
     }
