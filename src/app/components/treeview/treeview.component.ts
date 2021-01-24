@@ -1,5 +1,5 @@
 import { Executive, ExecutiveNode } from './../../classes/Executive/executive';
-import { ExecutiveGroup,ExectiveGroupNode } from './../../classes/ExecutiveGroup/executive-group';
+import { ExecutiveGroup, ExectiveGroupNode } from './../../classes/ExecutiveGroup/executive-group';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
@@ -29,12 +29,14 @@ export class TreeviewComponent implements OnInit {
 
   constructor(public execServ: ExecutiveService) { }
 
+  // tslint:disable-next-line: variable-name
   public _transformer = (node: ExectiveGroupNode , level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
       name: node.name,
       id: node.id,
       version: node.version,
+      // tslint:disable-next-line: object-literal-shorthand
       level: level,
     };
   }
@@ -44,7 +46,7 @@ export class TreeviewComponent implements OnInit {
     this.buildTree();
   }
 
-  public buildTree() {
+  public buildTree(): void{
     this.treeControl = new FlatTreeControl<ExecutiveFlatNode>(
       node => node.level, node => node.expandable);
 
@@ -53,37 +55,42 @@ export class TreeviewComponent implements OnInit {
 
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-    this.execServ.getFormatted().subscribe((data)=>{console.log(data);console.log(this.execServ.executivesData);this.dataSource.data = data});
+    this.execServ.getFormatted().subscribe(
+      (data) => {
+        console.log(data);
+        console.log(this.execServ.executivesData);
+        this.dataSource.data = data; }
+    );
 
   }
 
-  public refreshTree() {
+  public refreshTree(): void{
     this.dataSource = this.execServ.executiveGroups;
   }
 
   hasChild = (_: number, node: ExecutiveFlatNode) => node.expandable;
 
   // function triggered whe select a noda ( Group: Level 0 , Executive: Level 1)
-  openNode(node: ExecutiveFlatNode){
+  openNode(node: ExecutiveFlatNode): void{
     console.log(node);
 
     // populate the OUTPUT with the selected Executive node to be sent to the form.
-    if(node.level===1){
-      //var executive: Executive = this.execServ.executivesData.find(x => x.id === node.id);
-      var executive: Executive = this.execServ.executivesData.find(x => x.id === node.id);
+    if ( node.level === 1){
+      // var executive: Executive = this.execServ.executivesData.find(x => x.id === node.id);
+      const executive: Executive = this.execServ.executivesData.find(x => x.id === node.id);
       this.execGroupNode.emit(null);
       this.execNode.emit(executive);
     }
     // populate the OUTPUT with the selected Executive Group node to be sent to the form.
     else{
-      //var executiveGroup: ExecutiveGroup = this.execServ.executiveGroupsData.find(x => x.id === node.id);
-      var executiveGroup: ExecutiveGroup = this.execServ.executiveGroupsData.find(x => x.id === node.id);
+      // var executiveGroup: ExecutiveGroup = this.execServ.executiveGroupsData.find(x => x.id === node.id);
+      const executiveGroup: ExecutiveGroup = this.execServ.executiveGroupsData.find(x => x.id === node.id);
       this.execNode.emit(null);
       this.execGroupNode.emit(executiveGroup);
     }
   }
 
-  applyFilter(event: Event) {
+  applyFilter(event: Event): void {
     // const filterValue = (event.target as HTMLInputElement).value;
 
     // var newGroup: ExectiveGroupNode[] = [{"id": -2,"name": "New Group","children": []}];
