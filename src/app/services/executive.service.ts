@@ -84,7 +84,7 @@ export class ExecutiveService {
     );
   }
 
-  public getFormatted(): any {
+  public getFormatted(): Observable<ExectiveGroupNode[]> {
 
     const firstName = 'firstName';
     const lastName = 'lastName';
@@ -96,13 +96,19 @@ export class ExecutiveService {
       mergeMap(exec => this.getAllExecutiveGroupsPipe()
         .pipe(
           map( value => {
+
             // Adding All Groups to global variable for using when selecting a Group from treeview and for the Dropdownlist in exec form.
             this.executiveGroupsData = value;
-            return value // returning the groupNodes formatted.
+            // Adding "All Executives" group.
+            value.unshift({id: -1, name: 'All Executives', children: []});
+
+            // returning the groupNodes formatted.
+            return value
             .map(group => ({...group, children: exec
               // adding "name" prop to show in the treeview.
               .map(executive => ({...executive, name: `${executive[firstName]} ${executive[lastName]}`}))
-              .filter(executive => executive[executiveGroup].id === group.id) }) // grouping the executives inside its group.
+              // grouping the executives inside its group or All Executives if group id is -1 (Added group)
+              .filter(executive => executive[executiveGroup].id === group.id || group.id === -1 ) })
             );
           })
         )
