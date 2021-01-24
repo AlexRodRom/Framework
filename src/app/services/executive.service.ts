@@ -4,7 +4,6 @@ import { map, filter, mergeMap} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 
 
 @Injectable({
@@ -89,21 +88,21 @@ export class ExecutiveService {
 
     const firstName = 'firstName';
     const lastName = 'lastName';
+    const executiveGroup = 'executiveGroup';
     return this.getAllExecutivesPipe()
     .pipe(
       // Adding All Executives to global variable for using when selecting a exec from treeview.
       map(exec => this.executivesData = exec),
-      mergeMap(x => this.getAllExecutiveGroupsPipe()
+      mergeMap(exec => this.getAllExecutiveGroupsPipe()
         .pipe(
           map( value => {
             // Adding All Groups to global variable for using when selecting a Group from treeview and for the Dropdownlist in exec form.
             this.executiveGroupsData = value;
             return value // returning the groupNodes formatted.
-            .map(group => ({...group, children: x
-              // tslint:disable-next-line: no-shadowed-variable
-              .map(x => ({...x, name: `${x[firstName]} ${x[lastName]}`})) // adding "name" prop to show in the treeview.
-              // tslint:disable-next-line: no-string-literal
-              .filter(executive => executive['executiveGroup'].id === group.id) }) // grouping the executives inside its group.
+            .map(group => ({...group, children: exec
+              // adding "name" prop to show in the treeview.
+              .map(executive => ({...executive, name: `${executive[firstName]} ${executive[lastName]}`}))
+              .filter(executive => executive[executiveGroup].id === group.id) }) // grouping the executives inside its group.
             );
           })
         )

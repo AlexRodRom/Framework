@@ -28,8 +28,8 @@ export class ExecutiveGroupFormComponent implements OnInit {
      // calling Service for update API method
     this.execServ.updateExecutiveGroup(this.execGroupNode.id, ExecutiveGroupUpdated);
     this.execGroupNode.version++;
-    // Calling to Treeview compenent for refreshing the tree view.
 
+    // Calling to Treeview compenent for refreshing the tree view.
     this.execServ.executiveGroups = null;
     this.tree.refreshTree();
   }
