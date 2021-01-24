@@ -50,13 +50,13 @@ export class ExecutiveService {
 
   // GET Mapped
   public getAllExecutivesPipe(): Observable<Executive[]> {
-    // tslint:disable-next-line: no-string-literal
-    return this.http.get<Executive[]>(this.rootApi + 'executives').pipe(map(x => x['value']));
+    const valueProp = 'value';
+    return this.http.get<Executive[]>(this.rootApi + 'executives').pipe(map(x => x[valueProp]));
   }
 
   public getAllExecutiveGroupsPipe(): Observable<ExectiveGroupNode[]> {
-    // tslint:disable-next-line: no-string-literal
-    return this.http.get<ExecutiveGroup[]>(this.rootApi + 'executiveGroups').pipe(map(x => x['value']));
+    const valueProp = 'value';
+    return this.http.get<ExecutiveGroup[]>(this.rootApi + 'executiveGroups').pipe(map(x => x[valueProp]));
   }
 
 
@@ -87,6 +87,8 @@ export class ExecutiveService {
 
   public getFormatted(): any {
 
+    const firstName = 'firstName';
+    const lastName = 'lastName';
     return this.getAllExecutivesPipe()
     .pipe(
       // Adding All Executives to global variable for using when selecting a exec from treeview.
@@ -98,8 +100,8 @@ export class ExecutiveService {
             this.executiveGroupsData = value;
             return value // returning the groupNodes formatted.
             .map(group => ({...group, children: x
-              // tslint:disable-next-line: no-string-literal tslint:disable-next-line: no-shadowed-variable
-              .map(x => ({...x, name: `${x['firstName']} ${x['lastName']}`})) // adding "name" prop to show in the treeview.
+              // tslint:disable-next-line: no-shadowed-variable
+              .map(x => ({...x, name: `${x[firstName]} ${x[lastName]}`})) // adding "name" prop to show in the treeview.
               // tslint:disable-next-line: no-string-literal
               .filter(executive => executive['executiveGroup'].id === group.id) }) // grouping the executives inside its group.
             );

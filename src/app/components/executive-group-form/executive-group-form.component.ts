@@ -21,10 +21,9 @@ export class ExecutiveGroupFormComponent implements OnInit {
 
   onSubmitExecutiveGroup(form: NgForm): void {
     console.log(form.value);
-
+    const name = 'name';
     // formatting the Executive Group  from form (without Id) for updating.
-    // tslint:disable-next-line: no-string-literal
-    const ExecutiveGroupUpdated: ExecutiveGroup = { name: form.value['name'], version: this.execGroupNode.version };
+    const ExecutiveGroupUpdated: ExecutiveGroup = { name: form.value[name], version: this.execGroupNode.version };
 
      // calling Service for update API method
     this.execServ.updateExecutiveGroup(this.execGroupNode.id, ExecutiveGroupUpdated);

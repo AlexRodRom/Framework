@@ -29,15 +29,13 @@ export class TreeviewComponent implements OnInit {
 
   constructor(public execServ: ExecutiveService) { }
 
-  // tslint:disable-next-line: variable-name
-  public _transformer = (node: ExectiveGroupNode , level: number) => {
+  public transformer = (node: ExectiveGroupNode , level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
       name: node.name,
       id: node.id,
       version: node.version,
-      // tslint:disable-next-line: object-literal-shorthand
-      level: level,
+      level,
     };
   }
 
@@ -51,7 +49,7 @@ export class TreeviewComponent implements OnInit {
       node => node.level, node => node.expandable);
 
     this.treeFlattener = new MatTreeFlattener(
-      this._transformer, node => node.level, node => node.expandable, node => node.children);
+      this.transformer, node => node.level, node => node.expandable, node => node.children);
 
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
