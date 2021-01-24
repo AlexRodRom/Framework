@@ -21,26 +21,26 @@ export class ExecutiveGroupFormComponent implements OnInit {
 
   onSubmitExecutiveGroup(form: NgForm): void {
     console.log(form.value);
-
+    const name = 'name';
     // formatting the Executive Group  from form (without Id) for updating.
-    var ExecutiveGroupUpdated: ExecutiveGroup = {"name": form.value['name'],"version": this.execGroupNode.version };
+    const ExecutiveGroupUpdated: ExecutiveGroup = { name: form.value[name], version: this.execGroupNode.version };
 
      // calling Service for update API method
-    this.execServ.updateExecutiveGroup(this.execGroupNode.id,ExecutiveGroupUpdated);
+    this.execServ.updateExecutiveGroup(this.execGroupNode.id, ExecutiveGroupUpdated);
     this.execGroupNode.version++;
-    // Calling to Treeview compenent for refreshing the tree view.
 
-    this.execServ.executiveGroups=null;
+    // Calling to Treeview compenent for refreshing the tree view.
+    this.execServ.executiveGroups = null;
     this.tree.refreshTree();
   }
 
-  //function to close the alert for a succeed updation.
-  onRemoveAlert(){
+  // function to close the alert for a succeed updation.
+  onRemoveAlert(): void{
     this.execServ.updated = false;
   }
 
-  //function to close the error alert.
-  onRemoveErrorAlert(){
+  // function to close the error alert.
+  onRemoveErrorAlert(): void{
     this.execServ.httpError = null;
   }
 

@@ -26,42 +26,44 @@ export class ExecutiveFormComponent implements OnInit {
     console.log(form.value);
 
     // formatting the Executive from form (without Id) for updating.
-    var ExecutiveUpdated: Executive =
+    const ExecutiveUpdated: Executive =
     {
 
-      "lastName": form.value['lastName'],
-      "firstName": form.value['firstName'],
-      "initials": form.value['initials'],
-      "systemInitials": form.value['systemInitials'],
-      "title": form.value['title'],
-      "postTitle": form.value['postTitle'],
-      "salutation": form.value['salutation'],
-      "jobTitle": form.value['jobTitle'],
-      "officeId": form.value['officeId'],
-      "version": this.execNode.version ,
-      "executiveGroup": {
-          "id": this.execNode.executiveGroup.id,
-          "name": "",
-          "version": this.execNode.executiveGroup.version
+      /* tslint:disable:no-string-literal */
+      lastName: form.value['lastName'],
+      firstName: form.value['firstName'],
+      initials: form.value['initials'],
+      systemInitials: form.value['systemInitials'],
+      title: form.value['title'],
+      postTitle: form.value['postTitle'],
+      salutation: form.value['salutation'],
+      jobTitle: form.value['jobTitle'],
+      officeId: form.value['officeId'],
+      version: this.execNode.version ,
+      executiveGroup: {
+          id: this.execNode.executiveGroup.id,
+          name: '',
+          version: this.execNode.executiveGroup.version
       }
+      /* tslint:enable:no-string-literal */
 
     };
 
     // calling Service for update API method
-    this.execServ.updateExecutive(this.execNode.id,ExecutiveUpdated);
+    this.execServ.updateExecutive(this.execNode.id, ExecutiveUpdated);
 
     this.execNode.version++;
     // Calling to Treeview compenent for refreshing the tree view.
     this.tree.refreshTree();
   }
 
-  //function to close the alert for a succeed updation.
-  onRemoveAlert(){
+  // function to close the alert for a succeed updation.
+  onRemoveAlert(): void{
     this.execServ.updated = false;
   }
 
-  //function to close the error alert.
-  onRemoveErrorAlert(){
+  // function to close the error alert.
+  onRemoveErrorAlert(): void{
     this.execServ.httpError = null;
   }
 }

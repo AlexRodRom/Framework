@@ -1,5 +1,5 @@
 import { Executive, ExecutiveNode } from './../../classes/Executive/executive';
-import { ExecutiveGroup,ExectiveGroupNode } from './../../classes/ExecutiveGroup/executive-group';
+import { ExecutiveGroup, ExectiveGroupNode } from './../../classes/ExecutiveGroup/executive-group';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
@@ -29,13 +29,13 @@ export class TreeviewComponent implements OnInit {
 
   constructor(public execServ: ExecutiveService) { }
 
-  public _transformer = (node: ExectiveGroupNode , level: number) => {
+  public transformer = (node: ExectiveGroupNode , level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
       name: node.name,
       id: node.id,
       version: node.version,
-      level: level,
+      level,
     };
   }
 
@@ -44,77 +44,76 @@ export class TreeviewComponent implements OnInit {
     this.buildTree();
   }
 
-  public buildTree() {
+  public buildTree(): void{
     this.treeControl = new FlatTreeControl<ExecutiveFlatNode>(
       node => node.level, node => node.expandable);
 
     this.treeFlattener = new MatTreeFlattener(
-      this._transformer, node => node.level, node => node.expandable, node => node.children);
+      this.transformer, node => node.level, node => node.expandable, node => node.children);
 
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-    // Susbcring to Service method to bring the Observable with the API data.
-    // this.execServ.getFormattedData().subscribe((data)=> { this.dataSource.data = data; console.log(data); console.log(this.dataSource.data )});
-    // this.execServ.getFormattedData().subscribe(()=>this.dataSource.data = this.execServ.executiveGroups);
-
-    // this.execServ.getFormattedData().subscribe();
-
-    this.execServ.getFormatted().subscribe((data)=>{console.log(data);this.dataSource.data = data});
+    this.execServ.getFormatted().subscribe(
+      (data) => {
+        console.log(data);
+        console.log(this.execServ.executivesData);
+        this.dataSource.data = data; }
+    );
 
   }
 
-  public refreshTree() {
+  public refreshTree(): void{
     this.dataSource = this.execServ.executiveGroups;
   }
 
   hasChild = (_: number, node: ExecutiveFlatNode) => node.expandable;
 
   // function triggered whe select a noda ( Group: Level 0 , Executive: Level 1)
-  openNode(node: ExecutiveFlatNode){
+  openNode(node: ExecutiveFlatNode): void{
     console.log(node);
 
     // populate the OUTPUT with the selected Executive node to be sent to the form.
-    if(node.level===1){
-      //var executive: Executive = this.execServ.executivesData.find(x => x.id === node.id);
-      var executive: Executive = this.dataSource.find(x => x.id === node.id);
+    if ( node.level === 1){
+      // var executive: Executive = this.execServ.executivesData.find(x => x.id === node.id);
+      const executive: Executive = this.execServ.executivesData.find(x => x.id === node.id);
       this.execGroupNode.emit(null);
       this.execNode.emit(executive);
     }
     // populate the OUTPUT with the selected Executive Group node to be sent to the form.
     else{
-      //var executiveGroup: ExecutiveGroup = this.execServ.executiveGroupsData.find(x => x.id === node.id);
-      var executiveGroup: ExecutiveGroup = this.dataSource.data.find(x => x.id === node.id);
+      // var executiveGroup: ExecutiveGroup = this.execServ.executiveGroupsData.find(x => x.id === node.id);
+      const executiveGroup: ExecutiveGroup = this.execServ.executiveGroupsData.find(x => x.id === node.id);
       this.execNode.emit(null);
       this.execGroupNode.emit(executiveGroup);
     }
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
+  applyFilter(event: Event): void {
+    // const filterValue = (event.target as HTMLInputElement).value;
 
-    var newGroup: ExectiveGroupNode[] = [{"id": -2,"name": "New Group","children": []}];
-    this.dataSource = newGroup;
-    // this.dataSource.data.forEach(element => {
+    // var newGroup: ExectiveGroupNode[] = [{"id": -2,"name": "New Group","children": []}];
+    // this.dataSource = newGroup;
+    // // this.dataSource.data.forEach(element => {
 
-      // console.log(element.children);
-      // console.log(element.children.filter = filterValue.trim().toLowerCase());
+    //   // console.log(element.children);
+    //   // console.log(element.children.filter = filterValue.trim().toLowerCase());
 
-      // element.children.forEach(child => {
-      //   if(child.firstName != filterValue.trim().toLowerCase())
-      //   {
-      //     console.log("remove:"+ child);
-      //     //this.dataSource
-      //   }
-      // });
+    //   // element.children.forEach(child => {
+    //   //   if(child.firstName != filterValue.trim().toLowerCase())
+    //   //   {
+    //   //     console.log("remove:"+ child);
+    //   //     //this.dataSource
+    //   //   }
+    //   // });
 
-      // element.filter = filterValue.trim().toLowerCase();
-      // element.Children.forEach(child => {
+    //   // element.filter = filterValue.trim().toLowerCase();
+    //   // element.Children.forEach(child => {
 
-      // });
+    //   // });
 
-    // });
+    // // });
 
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    // this.dataSource.filter = filterValue.trim().toLowerCase();
 
   }
 
